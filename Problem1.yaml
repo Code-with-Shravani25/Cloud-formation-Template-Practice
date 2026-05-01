@@ -13,4 +13,4 @@ Resources:
             - sg-02886d854bd1341ae
           Tags:
             - Key: Name 
-              Value: MySimpleEc2
+              Value: MySimpleEc2  #Assigns name to EC2 instance
