@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Simple EC2 Instance
+Resources:
+    MyEc2Instance:
+       Type: AWS::EC2::Instance
+       Properties:
+          InstanceType: t3.medium
+          KeyName: Demo
+          ImageId: ami-02eb0c2388ee999f9
+          SecurityGroupIds: 
+            - sg-02886d854bd1341ae
+          Tags:
+            - Key: Name 
+              Value: MySimpleEc2
