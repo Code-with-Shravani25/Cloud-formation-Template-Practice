@@ -1,3 +1,5 @@
+# Create Simple EC2
+
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Simple EC2 Instance
 Resources:
