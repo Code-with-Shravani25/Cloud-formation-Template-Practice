@@ -1,0 +1,42 @@
+# Write CFT to create EC2 instance SG allowing port 22 and userdata that install apache
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: EC2 instance SG allowing port 22 and userdata that install apache
+Resources:
+    MySecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+          GroupDescription: Allow SSH and http
+          SecurityGroupIngress:
+              - IpProtocol: tcp
+                FromPort: 22
+                ToPort: 22
+                CidrIp: 0.0.0.0/0
+              - IpProtocol: tcp
+                FromPort: 80
+                ToPort: 80
+                CidrIp: 0.0.0.0/0
+    MyEC2:
+      Type: AWS::EC2::Instance
+      Properties:
+          InstanceType: t3.medium
+          KeyName: Demo
+          ImageId: ami-02eb0c2388ee999f9
+          SecurityGroupIds: 
+            - !Ref MySecurityGroup
+          UserData: 
+            Fn::Base64:
+               !Sub |
+                #!/bin/bash
+                yum update -y
+                yum install httpd -y
+                systemctl start httpd
+                systemctl enable httpd
+                echo "Welcome to Web server" > /var/www/html/index.html
+Outputs: #outputs aredisplayed in Outputs section of CFT AWS
+  InstancePublicIp:
+    Description: Public ip of ec2 instance
+    Value: !GetAtt MyEC2.PublicIp
+  WebsiteUrl:
+    Description: Apache web url
+    Value: !Sub "http://${MyEC2.PublicDnsName}"          

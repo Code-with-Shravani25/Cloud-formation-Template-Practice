@@ -1,0 +1,15 @@
+# Parameterize the EC2 AMI ID, with allowed Pattern for proper ec2 ami format.
+AWSTemplateFormatVersion: "2010-09-09"
+Description: EC2 Instance with parameterized AMI ID
+Parameters:
+    Amiid:
+      Type: String
+      Description: "Enter a valid ami id"
+      AllowedPattern: "ami-[a-z0-9]{8,17}$"
+      ConstraintDescription: "AMI id must start with ami- followed by 8 to 17 lowercase letters or numbers"
+Resources:
+    MyEC2:
+      Type: AWS::EC2::Instance
+      Properties:
+        InstanceType: t2.micro
+        ImageId: !Ref Amiid

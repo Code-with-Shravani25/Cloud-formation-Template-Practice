@@ -1,0 +1,11 @@
+# Create Key Pair
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create Key Pair
+Resources:
+    MyKeyPair:
+      Type: AWS::EC2::KeyPair
+      Properties:
+        KeyName: Practice
+        KeyType: rsa
+        KeyFormat: pem
+        

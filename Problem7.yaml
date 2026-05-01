@@ -1,0 +1,10 @@
+# Create S3 bucket with Versioning
+AWSTemplateFormatVersion: "2010-09-09"
+Description: S3 Bucket with Versioning
+Resources:
+    MyS3:
+      Type: AWS::S3::Bucket
+      Properties:
+          BucketName: Demo12334523erAFSErf #unique or else dont specify
+          VersioningConfiguration:
+            Status: Enabled

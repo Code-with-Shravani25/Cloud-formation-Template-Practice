@@ -1,0 +1,22 @@
+# Parameters in CFT
+# These let you define dynamic values that users can input when launching the stack. 
+# It helps make your template reuable and customizable.
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Allow user to specify instance type at launch
+Parameters:
+    InstanceType:
+       Type: String
+       Default: t2.micro
+       AllowedValues: 
+          - t2.micro
+          - t2.small
+          - t2.medium
+Resources:
+    MyEC2:
+      Type: AWS::EC2::Instance
+      Properties:
+          InstanceType: !Ref InstanceType
+          KeyName: Demo
+          ImageId: ami-02eb0c2388ee999f9
+          SecurityGroupIds: 
+            - sg-02886d854bd1341ae

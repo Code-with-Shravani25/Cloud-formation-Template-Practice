@@ -1,0 +1,21 @@
+# Launch EC2 with SG
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create and SG and use it in EC2
+Resources:
+    MySG:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+          GroupDescription: Allow SSH
+          SecurityGroupIngress:
+              - IpProtocol: tcp
+                FromPort: 22
+                ToPort: 22
+                CidrIp: 0.0.0.0/0
+    MyEC2:
+      Type: AWS::EC2::Instance
+      Properties:
+          InstanceType: t3.medium
+          KeyName: Demo
+          ImageId: ami-02eb0c2388ee999f9
+          SecurityGroupIds: 
+            - !Ref MySG           
