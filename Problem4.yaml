@@ -21,7 +21,7 @@ Resources:
       Properties:
           InstanceType: t3.medium
           KeyName: Demo
-          ImageId: ami-02eb0c2388ee999f9
+          ImageId: ami-00e801948462f718a
           SecurityGroupIds: 
             - !Ref MySecurityGroup
           UserData: 
@@ -33,7 +33,7 @@ Resources:
                 systemctl start httpd
                 systemctl enable httpd
                 echo "Welcome to Web server" > /var/www/html/index.html
-Outputs: #outputs are displayed in Outputs section of CFt in AWS console
+Outputs: #outputs aredisplayed in Outputs section of CFT AWS
   InstancePublicIp:
     Description: Public ip of ec2 instance
     Value: !GetAtt MyEC2.PublicIp
