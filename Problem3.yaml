@@ -1,22 +1,23 @@
-#Install Apache Web Server using UserData on EC2
-
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Install Apache Web Server using UserData on EC2
+
 Resources:
-    UserDataEc2:
-      Type: AWS::EC2::Instance
-      Properties:
-          InstanceType: t3.medium
-          KeyName: Demo
-          ImageId: ami-02eb0c2388ee999f9
-          SecurityGroupIds: 
-            - sg-02886d854bd1341ae
-          UserData: 
-            Fn::Base64:
-              !Sub |
-                #!/bin/bash
-                yum update -y
-                yum install httpd -y
-                systemctl start httpd
-                systemctl enable httpd
-                echo "Welcome to Web server" > /var/www/html/index.html
+  UserDataEc2:
+    Type: AWS::EC2::Instance
+
+    Properties:
+      InstanceType: t3.medium
+      KeyName: Demo
+      ImageId: ami-00e801948462f718a
+
+      SecurityGroupIds:
+        - sg-0014e2d211f0a4462
+
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install httpd -y
+          sudo systemctl start httpd
+          sudo systemctl enable httpd
+          echo "Hello World" > /var/www/html/index.html
