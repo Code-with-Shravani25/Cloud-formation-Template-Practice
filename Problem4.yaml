@@ -33,7 +33,7 @@ Resources:
                 systemctl start httpd
                 systemctl enable httpd
                 echo "Welcome to Web server" > /var/www/html/index.html
-Outputs: #outputs aredisplayed in Outputs section of CFT AWS
+Outputs: #outputs are displayed in Outputs section of CFt in AWS console
   InstancePublicIp:
     Description: Public ip of ec2 instance
     Value: !GetAtt MyEC2.PublicIp
