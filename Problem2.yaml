@@ -1,6 +1,6 @@
 # Launch EC2 with SG
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create and SG and use it in EC2
+Description: Create SG and use it in EC2
 Resources:
     MySG:
       Type: AWS::EC2::SecurityGroup
