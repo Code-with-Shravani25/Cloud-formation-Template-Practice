@@ -17,6 +17,6 @@ Resources:
       Properties:
           InstanceType: !Ref InstanceType
           KeyName: Demo
-          ImageId: ami-02eb0c2388ee999f9
+          ImageId: ami-00e801948462f718a
           SecurityGroupIds: 
-            - sg-02886d854bd1341ae
+            - sg-0014e2d211f0a4462
