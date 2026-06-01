@@ -5,6 +5,9 @@ Resources:
     MyS3:
       Type: AWS::S3::Bucket
       Properties:
-          BucketName: Demo12334523erAFSErf #unique or else dont specify
           VersioningConfiguration:
             Status: Enabled
+Outputs:
+  S3Name:
+    Description: Bucket name
+    Value: !Ref MyS3            
