@@ -11,9 +11,16 @@ aws cloudformation create-stack \
 aws cloudformation delete-stack \
   --stack-name myec2
 ```
-## to update stack
+## To update stack
 ```bash
 aws cloudformation update-stack \
   --stack-name my-stack \
   --template-body file://template.yaml
+```
+## To create stack of IAM service
+```bash
+aws cloudformation create-stack \
+  --stack-name iam-stack \
+  --template-body file://iam-template.yaml \
+  --capabilities CAPABILITY_NAMED_IAM
 ```
