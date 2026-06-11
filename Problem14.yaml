@@ -1,0 +1,30 @@
+# ASG with Launch Template
+AWSTemplateFormatVersion: "2010-09-09"
+Description: AutoScaling Group with Launch Template
+Resources:
+  MyLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateData: 
+         ImageId: ami-091138d0f0d41ff90
+         InstanceType: t2.micro
+         KeyName: Demo
+         SecurityGroupIds:
+           - sg-0014e2d211f0a4462
+  MyASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier:
+        - subnet-0275a717352c59f9b
+        - subnet-0b5f87bc7f7116131
+      LaunchTemplate:
+        LaunchTemplateId: !Ref MyLaunchTemplate 
+        Version: !GetAtt MyLaunchTemplate.LatestVersionNumber 
+      MinSize: 1
+      MaxSize: 3
+      DesiredCapacity: 2
+Outputs:
+  LaunchTemplateId:
+    Value: !Ref MyLaunchTemplate
+  AutoScalingGroupName:
+    Value: !Ref MyASG        
