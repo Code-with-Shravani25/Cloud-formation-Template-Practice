@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: ALB with Target Group and Listener
+
+Resources:
+
+  MyALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: MyALB
+      Scheme: internet-facing
+      Type: application
+      SecurityGroups:
+        - sg-0014e2d211f0a4462
+      Subnets:
+        - subnet-0275a717352c59f9b
+        - subnet-0b5f87bc7f7116131
+
+  MyTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: MyTargetGroup
+      Port: 80
+      Protocol: HTTP
+      VpcId: vpc-05e10e81b4fca8c96
+      TargetType: instance
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+
+  MyListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref MyALB
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref MyTargetGroup
+
+Outputs:
+
+  LoadBalancerDNS:
+    Description: ALB DNS Name
+    Value: !GetAtt MyALB.DNSName
+
+  TargetGroupArn:
+    Value: !Ref MyTargetGroup
+
+  LoadBalancerArn:
+    Value: !Ref MyALB
