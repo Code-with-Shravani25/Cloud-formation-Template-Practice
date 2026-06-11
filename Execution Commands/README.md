@@ -24,3 +24,6 @@ aws cloudformation create-stack \
   --template-body file://iam-template.yaml \
   --capabilities CAPABILITY_NAMED_IAM
 ```
+- Why CAPABILITY_NAMED_IAM?
+
+CloudFormation requires explicit acknowledgment before creating or modifying IAM resources because they affect permissions and security.
