@@ -6,8 +6,8 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: 10.0.0.0/16
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
+      EnableDnsSupport: true #Enable DNS resolution in vpc using aws provided DNS server.
+      EnableDnsHostnames: true #Allows EC2 instances in VPC to receive DNS hostnames. Public instances can get public DNS names when this is enabled.
   MyIGW:
     Type: AWS::EC2::InternetGateway
   AttachIGW:
