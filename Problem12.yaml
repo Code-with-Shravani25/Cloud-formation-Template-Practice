@@ -1,0 +1,29 @@
+# Mappings:
+# Allows us to store environment specific values in one place and retrieve them dynamically using Fn::FundInMap
+# This avoids hardcoding tags for different environments and ensures consistent tagging across resiurces
+
+# Use mappings to choose ami based on region
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Use mappings to choose ami based on region
+Mappings:
+  RegionMap:
+    us-east-1:
+      AMI: ami-091138d0f0d41ff90
+    us-west-2:
+      AMI: ami-0fe18bc3cfa53a248
+    ap-south-1:
+      AMI: ami-0db56f446d44f2f09
+Resources:
+    MyEC2:
+      Type: AWS::EC2::Instance
+      Properties:
+          InstanceType: t2.micro
+          ImageId: !FindInMap
+            - RegionMap
+            - !Ref AWS::Region 
+            - AMI    
+
+# !FindInMap
+# - MappingName
+# - TopLevelKey
+# - SecondLevelKey
