@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: RDS DB 
+Parameters:
+  DBName: #DBInstanceIdentifier is DB server name and DBName is Database name created inside that server.
+    Type: String
+    Default: mydb
+  DBUser:
+    Type: String
+    Default: admin
+  DBPassword:
+    Type: String
+    NoEcho: true # Hides the passwordin CloudFormation console,events and outputs
+    MinLength: 8 # Ensures password is atleast 8 characters
+Resources:
+  MyDBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup #RDS cannot be launched directly into a VPC, AWs needs to know which subnets it can use. A DBSubnetGroup contains list of subnets.
+    Properties:
+      DBSubnetGroupDescription: RDS Subnet Group
+      SubnetIds: # it can launch in either of subnets
+        - subnet-0275a717352c59f9b
+        - subnet-0b5f87bc7f7116131
+  MyRDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: myrds-db #DB server name
+      Engine: mysql # it can be either postgres,mariadb,oracle-ee
+      EngineVersion: '8.4.7'
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20 # this means 20GB
+      StorageType: gp3
+      MasterUsername: !Ref DBUser
+      MasterUserPassword: !Ref DBPassword #uses the password entered during the stack creation.
+      DBName: !Ref DBName
+      PubliclyAccessible: false
+      MultiAZ: false
+      BackupRetentionPeriod: 7
+      DBSubnetGroupName: !Ref MyDBSubnetGroup
+      DeletionProtection: false
+Outputs:
+  RDSEndpoint:
+    Value: !GetAtt MyRDSInstance.Endpoint.Address
+  RDSPort:
+    Value: !GetAtt MyRDSInstance.Endpoint.Port
