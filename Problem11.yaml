@@ -1,0 +1,44 @@
+# IAM role with inline policy and attach it to EC2
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM role
+Resources:
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: EC2S3Role
+      AssumeRolePolicyDocument: #this block defines who can assume role
+        Version: '2012-10-17' #field represents the IAM policy language version, not a software release version
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com #Trust policy that allows EC2 to assume the role
+            Action:
+              - sts:AssumeRole #Allow EC2 to assume the role and obtain temporary credentials
+      Policies:
+        - PolicyName: S3ReadOnlyInlinePolicy
+          PolicyDocument: 
+            Version: '2012-10-17'             
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3.ListBucket
+                  - s3.GetObject
+                Resource:
+                  - "*"
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+       - !Ref EC2Role
+  MyEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-091138d0f0d41ff90
+      InstanceType: t2.micro
+      IamInstanceProfile: !Ref InstanceProfile
+Outputs:
+  RoleName:
+    Value: !Ref EC2Role
+  InstanceId:
+    Value: !Ref MyEC2                           
