@@ -27,3 +27,11 @@ aws cloudformation create-stack \
 - Why CAPABILITY_NAMED_IAM?
 
 CloudFormation requires explicit acknowledgment before creating or modifying IAM resources because they affect permissions and security.
+
+## To create stack and pass parameters
+```bash
+aws cloudformation create-stack \
+  --stack-name my-stack \
+  --template-body file://ec2.yaml \
+  --parameters ParameterKey=InstanceType,ParameterValue=t3.micro
+```
