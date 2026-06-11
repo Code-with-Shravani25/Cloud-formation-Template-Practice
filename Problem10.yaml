@@ -1,0 +1,62 @@
+# Create VPC with Public and Private Subnet, also launch an EC2 in public subnet
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create VPC with Public and Private Subnet, also launch an EC2 in public subnet
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+  MyIGW:
+    Type: AWS::EC2::InternetGateway
+  AttachIGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref MyIGW
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: us-east-1a
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: us-east-1a
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachIGW
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref MyIGW
+  PublicSubnetAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet
+  MyEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-091138d0f0d41ff90
+      InstanceType: t2.micro
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds:
+        - sg-0014e2d211f0a4462
+Outputs:
+  VpcId:
+    Value: !Ref MyVPC
+  PublicSubnetId:
+    Value: !Ref PublicSubnet
+  PrivateSubnetId:
+    Value: !Ref PrivateSubnet
+  InstanceId:
+    Value: !Ref MyEC2      
