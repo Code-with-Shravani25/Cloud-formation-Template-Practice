@@ -43,6 +43,16 @@ Resources:
     Properties:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0    
   MyEC2:
     Type: AWS::EC2::Instance
     Properties:
@@ -50,7 +60,7 @@ Resources:
       InstanceType: t2.micro
       SubnetId: !Ref PublicSubnet
       SecurityGroupIds:
-        - sg-0014e2d211f0a4462
+        - !Ref MySecurityGroup #For an EC2 instance, the Security Group must belong to the same VPC as the EC2 instance, so created SG
 Outputs:
   VpcId:
     Value: !Ref MyVPC
