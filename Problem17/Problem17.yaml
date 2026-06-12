@@ -1,0 +1,34 @@
+#Use condition to deploy resources only in production, Deploy EC2+RDS if env-prod and Deploy only ec2 if env=dev
+AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 in all environments, RDS only in Production
+
+Parameters:
+  Environment:
+    Type: String
+    AllowedValues:
+      - Dev
+      - Prod
+
+Conditions:
+  IsProd: !Equals [!Ref Environment, Prod]
+
+Resources:
+
+  # Created in both Dev and Prod
+  MyEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-091138d0f0d41ff90
+      InstanceType: t2.micro
+
+  # Created only in Prod
+  MyRDS:
+    Type: AWS::RDS::DBInstance
+    Condition: IsProd
+    Properties:
+      DBInstanceIdentifier: mydb
+      Engine: mysql
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      MasterUsername: admin
+      MasterUserPassword: Password123
