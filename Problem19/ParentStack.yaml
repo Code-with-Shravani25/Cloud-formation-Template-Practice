@@ -6,13 +6,13 @@ Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://us-east-1.console.aws.amazon.com/s3/object/cloudformationstackspractice?region=us-east-1&prefix=VPCStack.yaml
+      TemplateURL: https://cloudformationstackspractice.s3.us-east-1.amazonaws.com/VPCStack.yaml
 
   ComputeStack:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPCStack
     Properties:
-      TemplateURL: https://us-east-1.console.aws.amazon.com/s3/object/cloudformationstackspractice?region=us-east-1&prefix=EC2Stack.yaml
+      TemplateURL: https://cloudformationstackspractice.s3.us-east-1.amazonaws.com/EC2Stack.yaml
 
       Parameters:
         VPCId:
@@ -25,7 +25,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPCStack
     Properties:
-      TemplateURL: https://us-east-1.console.aws.amazon.com/s3/object/cloudformationstackspractice?region=us-east-1&prefix=RDSStack.yaml
+      TemplateURL: https://cloudformationstackspractice.s3.us-east-1.amazonaws.com/RDSStack.yaml
 
       Parameters:
         VPCId:
