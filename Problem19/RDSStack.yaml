@@ -6,13 +6,27 @@ Parameters:
   VPCId:
     Type: AWS::EC2::VPC::Id
 
+  Subnet1:
+    Type: AWS::EC2::Subnet::Id
+
+  Subnet2:
+    Type: AWS::EC2::Subnet::Id
+
 Resources:
 
   RDSSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: RDS SG
+      GroupDescription: RDS Security Group
       VpcId: !Ref VPCId
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: RDS Subnet Group
+      SubnetIds:
+        - !Ref Subnet1
+        - !Ref Subnet2
 
   MyDB:
     Type: AWS::RDS::DBInstance
@@ -20,11 +34,17 @@ Resources:
       Engine: mysql
       DBInstanceClass: db.t3.micro
       AllocatedStorage: 20
+
       MasterUsername: admin
       MasterUserPassword: Password123!
+
       PubliclyAccessible: true
+
       VPCSecurityGroups:
         - !Ref RDSSG
+
+      DBSubnetGroupName: !Ref DBSubnetGroup
+
       BackupRetentionPeriod: 0
 
 Outputs:
