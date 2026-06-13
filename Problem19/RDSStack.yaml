@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: RDS Stack
+
+Parameters:
+
+  VPCId:
+    Type: AWS::EC2::VPC::Id
+
+Resources:
+
+  RDSSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: RDS SG
+      VpcId: !Ref VPCId
+
+  MyDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: mysql
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      MasterUsername: admin
+      MasterUserPassword: Password123!
+      PubliclyAccessible: true
+      VPCSecurityGroups:
+        - !Ref RDSSG
+      BackupRetentionPeriod: 0
+
+Outputs:
+
+  DBEndpoint:
+    Value: !GetAtt MyDB.Endpoint.Address
