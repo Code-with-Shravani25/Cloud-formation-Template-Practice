@@ -1,0 +1,13 @@
+## Nested Stacks
+---
+- Used to break a large CloudFormation template into smaller templates
+- Parent stack controls all child stacks
+- When the parent stack is created:
+  - Child Stacks are created automatically.
+  - Updating the parent updates child stack
+  - Deleting the parent deletes child stacks
+- A parent stack creates and manages child stacks using AWS::CloudFormation::Stack
+- It is used to modularize a large Cloud Formation template by creating child stacks managed by parent stack.
+-  In Nested Stacks, resources are shared through the parent stack.
+-  One child stack exposes values using Outputs, the parent stack retrieves them using !GetAtt ChildStack.Outputs.OutputName, and then passes them as Parameters to another child stack.
+-  Child stacks do not directly communicate with each other; the parent stack acts as the intermediary.
