@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Parent Stack
+
+Resources:
+
+  VPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://bucket.s3.amazonaws.com/vpc.yaml
+
+  ComputeStack:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: VPCStack
+    Properties:
+      TemplateURL: https://bucket.s3.amazonaws.com/ec2.yaml
+
+      Parameters:
+        VPCId:
+          !GetAtt VPCStack.Outputs.VPCId
+
+        SubnetId:
+          !GetAtt VPCStack.Outputs.PublicSubnetId
+
+  DatabaseStack:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: VPCStack
+    Properties:
+      TemplateURL: https://bucket.s3.amazonaws.com/rds.yaml
+
+      Parameters:
+        VPCId:
+          !GetAtt VPCStack.Outputs.VPCId
